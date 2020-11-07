@@ -1,0 +1,15 @@
+org: fordaaronj
+app: sf-api
+component: express
+stage: production
+name: sf-api
+
+provider:
+  name: aws
+  region: us-east-1 
+  stage: production
+  memorySize: 512
+  timout: 30
+
+inputs:
+  src: ./
