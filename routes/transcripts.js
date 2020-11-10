@@ -20,7 +20,9 @@ router.get('/', async (req, res) => {
         LIMIT $2
         OFFSET $3
         `, [req.query.q, limit, offset]);
-    res.json(rows)
+    res.json({rows, sources: [
+        'https://sfgov.legistar.com/Legislation.aspx'
+    ]})
 });
 
 router.get('/agg/years', async (req, res) => {
@@ -35,7 +37,9 @@ router.get('/agg/years', async (req, res) => {
         GROUP BY 1
         ORDER BY 1
     `, [req.query.q]);
-    res.json(rows)
+    res.json({rows, sources: [
+        'https://sfgov.legistar.com/Legislation.aspx'
+    ]})
 });
 
 router.get('/agg/speakers', async (req, res) => {
@@ -51,7 +55,9 @@ router.get('/agg/speakers', async (req, res) => {
         GROUP BY 1
         ORDER BY 2 DESC
     `, [req.query.q]);
-    res.json(rows)
+    res.json({rows, sources: [
+        'https://sfgov.legistar.com/Legislation.aspx'
+    ]})
 });
 
 module.exports = router;
