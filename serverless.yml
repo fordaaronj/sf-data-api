@@ -1,8 +1,8 @@
 org: fordaaronj
-app: sf-api
+app: goldencitydata
 component: express
 stage: production
-name: sf-api
+name: goldencitydata-api
 
 provider:
   name: aws
