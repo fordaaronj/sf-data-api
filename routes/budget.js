@@ -24,6 +24,36 @@ router.get('/per-person', async (req, res) => {
     ]});
 });
 
+router.get('/employees', async (req, res) => {
+    const { rows } = await query(`
+        SELECT year, count(DISTINCT employee_identifier) "employees"
+        FROM employees
+        WHERE year_type = 'Calendar'
+        GROUP BY 1;
+    `, undefined, 'number-employees');
+    res.json({rows, sources: [
+        'https://data.sfgov.org/City-Management-and-Ethics/Employee-Compensation/88g8-5mnd'
+    ]});
+});
+
+router.get('/revenue', async (req, res) => {
+    if (!req.query.category) return res.status(400).json({error: 'The category query parameter is required'}); 
+    
+    const { rows } = await query(`
+        SELECT fiscal_year, round(sum(budget)::float / 1000000) "revenue_millions"
+        FROM budget 
+        WHERE 
+            revenue_or_spending = 'Revenue'
+            AND "character" = $1
+            AND fiscal_year <= extract(year from now())
+        GROUP BY 1
+        ORDER BY 1
+    `, [req.query.category], `budget-${req.query.category}`);
+    res.json({rows, sources: [
+        'https://data.sfgov.org/City-Management-and-Ethics/Budget/xdgd-c79v'
+    ]});
+})
+
 router.get('/homeless', async (req, res) => {
     const { rows } = await query(`
         SELECT fiscal_year "year", round(sum(budget)::float / 1000000) "budget_millions"

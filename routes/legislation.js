@@ -38,7 +38,9 @@ router.get('/', async (req, res) => {
             SELECT id, name
             FROM people
         ) p ON ls.person_id = p.id
-        WHERE l.text_index @@ plainto_tsquery('english', $1)
+        WHERE 
+            l.text_index @@ plainto_tsquery('english', $1)
+            AND l.type != 'Communication'
         GROUP BY l.id
         ORDER BY l.introduced_on DESC
         LIMIT $2
@@ -60,6 +62,7 @@ router.get('/outcomes', async (req, res) => {
             AND introduced_on IS NOT NULL
             AND extract(year from introduced_on) >= 2000
             AND introduced_on <= now() - interval '6 months'
+            AND type != 'Communication'
         GROUP BY 1
         ORDER BY 1
     `, undefined, 'legislation-outcomes');

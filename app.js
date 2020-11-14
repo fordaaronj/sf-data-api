@@ -13,6 +13,7 @@ app.use('/api/311', require('./routes/311'));
 app.use('/api/affordability', require('./routes/affordability'));
 app.use('/api/budget', require('./routes/budget'));
 app.use('/api/education', require('./routes/education'));
+app.use('/api/incidents', require('./routes/incidents'));
 app.use('/api/legislation', require('./routes/legislation'));
 app.use('/api/transcripts', require('./routes/transcripts'));
 
