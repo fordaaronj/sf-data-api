@@ -16,6 +16,7 @@ app.use('/api/education', require('./routes/education'));
 app.use('/api/incidents', require('./routes/incidents'));
 app.use('/api/legislation', require('./routes/legislation'));
 app.use('/api/transcripts', require('./routes/transcripts'));
+app.use('/api/transportation', require('./routes/transportation'));
 
 // Run
 if (process.env.NODE_ENV == 'development') app.listen(process.env.PORT || 3000);
