@@ -2,6 +2,27 @@ const { query, } = require('../db');
 
 const router = require('express').Router();
 
+router.get('/summary', async (req, res) => {
+    const { rows } = await query(`
+        SELECT fiscal_year, round(sum(budget)::float / 1000000) "budget_millions"
+        FROM budget
+        WHERE 
+            revenue_or_spending = 'Spending'
+            AND fiscal_year <= extract(year from now()) + 1
+            AND department NOT IN (
+                'AIR Airport Commission',
+                'MTA Municipal Transprtn Agncy',
+                'PRT Port'
+            )
+        GROUP BY 1
+        ORDER BY 1;
+    `, undefined, 'annual-budget');
+
+    res.json({rows, sources: [
+        'https://data.sfgov.org/City-Management-and-Ethics/Budget/xdgd-c79v'
+    ]});
+})
+
 router.get('/per-person', async (req, res) => {
     const { rows } = await query(`
         SELECT 
